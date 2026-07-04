@@ -1,199 +1,305 @@
--- ===========================
--- ORACLE SQL BASIC CHEAT SHEET
--- ===========================
-
--- Show current container
-SHOW CON_NAME;
-SELECT name FROM v$containers;
-ALTER SESSION SET CONTAINER = freepdb1;
-ALTER PLUGGABLE DATABASE freepdb1 OPEN;
-
 --------------------------------------------------
 -- CREATE TABLE
 --------------------------------------------------
-CREATE TABLE Asset(
-    aId NUMBER PRIMARY KEY,                 -- Primary Key
-    aName NVARCHAR2(50) UNIQUE NOT NULL,    -- Asset Name
-    aPrice NUMBER(12,2) DEFAULT 0 NOT NULL, -- Price
-    purchaseDate DATE                       -- Purchase Date
+CREATE TABLE EMPLOYEE(
+    EMP_ID NUMBER PRIMARY KEY,
+    EMP_NAME VARCHAR2(50) NOT NULL,
+    EMP_SALARY NUMBER(10,2),
+    DEPT_ID NUMBER
 );
 
-DESC Asset;    -- Display table structure
+DESC EMPLOYEE;
 
 --------------------------------------------------
--- INSERT (CREATE)
+-- INSERT DATA
 --------------------------------------------------
-INSERT INTO Asset VALUES(1,'Laptop',80000,SYSDATE);
-INSERT INTO Asset VALUES(2,'Printer',25000,SYSDATE);
+INSERT INTO EMPLOYEE VALUES(101,'Ashish Khadka',50000,10);
+INSERT INTO EMPLOYEE VALUES(102,'Sita Sharma',45000,20);
+INSERT INTO EMPLOYEE VALUES(103,'Ram Thapa',60000,10);
+INSERT INTO EMPLOYEE VALUES(104,'Hari KC',55000,30);
+INSERT INTO EMPLOYEE VALUES(105,'Gita Rai',48000,20);
+INSERT INTO EMPLOYEE VALUES(106,'Bikash Gurung',70000,30);
+INSERT INTO EMPLOYEE VALUES(107,'Nisha Adhikari',52000,10);
+INSERT INTO EMPLOYEE VALUES(108,'Prakash Bhandari',65000,40);
+INSERT INTO EMPLOYEE VALUES(109,'Anita Joshi',47000,20);
+INSERT INTO EMPLOYEE VALUES(110,'Rohan Shrestha',58000,40);
+
+COMMIT;
 
 --------------------------------------------------
--- SELECT (READ)
+-- SELECT
 --------------------------------------------------
-SELECT * FROM Asset;
-SELECT aId,aName FROM Asset;
+SELECT * FROM EMPLOYEE;
+
+SELECT EMP_ID,EMP_NAME
+FROM EMPLOYEE;
 
 --------------------------------------------------
 -- WHERE
 --------------------------------------------------
-SELECT * FROM Asset WHERE aId=1;
-SELECT * FROM Asset WHERE aPrice>50000;
+SELECT *
+FROM EMPLOYEE
+WHERE EMP_ID=101;
+
+SELECT *
+FROM EMPLOYEE
+WHERE EMP_SALARY>50000;
+
+SELECT *
+FROM EMPLOYEE
+WHERE DEPT_ID=20;
 
 --------------------------------------------------
--- UPDATE
+-- ORDER BY
 --------------------------------------------------
-UPDATE Asset
-SET aPrice=85000
-WHERE aId=1;
+SELECT *
+FROM EMPLOYEE
+ORDER BY EMP_SALARY ASC;
 
-UPDATE Asset
-SET aName='Gaming Laptop',
-    aPrice=90000
-WHERE aId=1;
+SELECT *
+FROM EMPLOYEE
+ORDER BY EMP_SALARY DESC;
 
---------------------------------------------------
--- DELETE
---------------------------------------------------
-DELETE FROM Asset
-WHERE aId=2;
-
---------------------------------------------------
--- SORTING
---------------------------------------------------
-SELECT * FROM Asset ORDER BY aPrice ASC;
-SELECT * FROM Asset ORDER BY aPrice DESC;
+SELECT *
+FROM EMPLOYEE
+ORDER BY EMP_NAME;
 
 --------------------------------------------------
 -- DISTINCT
 --------------------------------------------------
-SELECT DISTINCT aPrice FROM Asset;
+SELECT DISTINCT DEPT_ID
+FROM EMPLOYEE;
 
 --------------------------------------------------
 -- LIKE
 --------------------------------------------------
-SELECT * FROM Asset WHERE aName LIKE 'L%';    -- Starts with L
-SELECT * FROM Asset WHERE aName LIKE '%r';    -- Ends with r
-SELECT * FROM Asset WHERE aName LIKE '%top%'; -- Contains top
-SELECT * FROM Asset WHERE aName LIKE '_a%';   -- Second letter a
+SELECT *
+FROM EMPLOYEE
+WHERE EMP_NAME LIKE 'A%';
+
+SELECT *
+FROM EMPLOYEE
+WHERE EMP_NAME LIKE '%a';
+
+SELECT *
+FROM EMPLOYEE
+WHERE EMP_NAME LIKE '%Sh%';
+
+SELECT *
+FROM EMPLOYEE
+WHERE EMP_NAME LIKE '_i%';
 
 --------------------------------------------------
 -- BETWEEN
 --------------------------------------------------
-SELECT * FROM Asset
-WHERE aPrice BETWEEN 20000 AND 90000;
+SELECT *
+FROM EMPLOYEE
+WHERE EMP_SALARY BETWEEN 50000 AND 65000;
 
 --------------------------------------------------
--- IN / NOT IN
+-- IN
 --------------------------------------------------
-SELECT * FROM Asset WHERE aId IN (1,2,3);
-SELECT * FROM Asset WHERE aId NOT IN (2,3);
+SELECT *
+FROM EMPLOYEE
+WHERE DEPT_ID IN (10,20);
+
+SELECT *
+FROM EMPLOYEE
+WHERE EMP_ID IN (101,103,105);
 
 --------------------------------------------------
--- NULL
+-- NOT IN
 --------------------------------------------------
-SELECT * FROM Asset WHERE purchaseDate IS NULL;
-SELECT * FROM Asset WHERE purchaseDate IS NOT NULL;
+SELECT *
+FROM EMPLOYEE
+WHERE DEPT_ID NOT IN (30,40);
+
+--------------------------------------------------
+-- AND
+--------------------------------------------------
+SELECT *
+FROM EMPLOYEE
+WHERE EMP_SALARY>50000
+AND DEPT_ID=10;
+
+--------------------------------------------------
+-- OR
+--------------------------------------------------
+SELECT *
+FROM EMPLOYEE
+WHERE DEPT_ID=20
+OR DEPT_ID=40;
+
+--------------------------------------------------
+-- NOT
+--------------------------------------------------
+SELECT *
+FROM EMPLOYEE
+WHERE NOT EMP_SALARY>60000;
+
+--------------------------------------------------
+-- UPDATE
+--------------------------------------------------
+UPDATE EMPLOYEE
+SET EMP_SALARY=55000
+WHERE EMP_ID=101;
+
+UPDATE EMPLOYEE
+SET EMP_NAME='Ashish K.',
+    EMP_SALARY=60000
+WHERE EMP_ID=101;
+
+--------------------------------------------------
+-- DELETE
+--------------------------------------------------
+DELETE FROM EMPLOYEE
+WHERE EMP_ID=110;
+
+ROLLBACK;
 
 --------------------------------------------------
 -- AGGREGATE FUNCTIONS
 --------------------------------------------------
-SELECT COUNT(*) FROM Asset;
-SELECT SUM(aPrice) FROM Asset;
-SELECT AVG(aPrice) FROM Asset;
-SELECT MAX(aPrice) FROM Asset;
-SELECT MIN(aPrice) FROM Asset;
+SELECT COUNT(*) FROM EMPLOYEE;
+
+SELECT SUM(EMP_SALARY) FROM EMPLOYEE;
+
+SELECT AVG(EMP_SALARY) FROM EMPLOYEE;
+
+SELECT MAX(EMP_SALARY) FROM EMPLOYEE;
+
+SELECT MIN(EMP_SALARY) FROM EMPLOYEE;
 
 --------------------------------------------------
--- GROUP BY / HAVING
+-- GROUP BY
 --------------------------------------------------
-SELECT aPrice,COUNT(*)
-FROM Asset
-GROUP BY aPrice;
+SELECT DEPT_ID,
+COUNT(*) TOTAL_EMPLOYEE
+FROM EMPLOYEE
+GROUP BY DEPT_ID;
 
-SELECT aPrice,COUNT(*)
-FROM Asset
-GROUP BY aPrice
-HAVING COUNT(*)>1;
-
---------------------------------------------------
--- LOGICAL OPERATORS
---------------------------------------------------
-SELECT * FROM Asset
-WHERE aPrice>20000 AND aPrice<80000;
-
-SELECT * FROM Asset
-WHERE aPrice<20000 OR aPrice>80000;
-
-SELECT * FROM Asset
-WHERE NOT aPrice>50000;
+SELECT DEPT_ID,
+AVG(EMP_SALARY) AVG_SALARY
+FROM EMPLOYEE
+GROUP BY DEPT_ID;
 
 --------------------------------------------------
--- LIMIT ROWS (Oracle)
+-- HAVING
 --------------------------------------------------
-SELECT *
-FROM Asset
-WHERE ROWNUM<=5;
+SELECT DEPT_ID,
+COUNT(*) TOTAL
+FROM EMPLOYEE
+GROUP BY DEPT_ID
+HAVING COUNT(*)>2;
+
+--------------------------------------------------
+-- ALIAS
+--------------------------------------------------
+SELECT EMP_NAME AS NAME,
+EMP_SALARY AS SALARY
+FROM EMPLOYEE;
 
 --------------------------------------------------
 -- ARITHMETIC
 --------------------------------------------------
 SELECT
-    aId,
-    aName,
-    aPrice,
-    aPrice*0.13 AS VAT
-FROM Asset;
+EMP_NAME,
+EMP_SALARY,
+EMP_SALARY*12 AS ANNUAL_SALARY
+FROM EMPLOYEE;
+
+SELECT
+EMP_NAME,
+EMP_SALARY,
+EMP_SALARY*0.10 BONUS
+FROM EMPLOYEE;
+
+--------------------------------------------------
+-- ROWNUM
+--------------------------------------------------
+SELECT *
+FROM EMPLOYEE
+WHERE ROWNUM<=5;
+
+--------------------------------------------------
+-- NULL
+--------------------------------------------------
+SELECT *
+FROM EMPLOYEE
+WHERE EMP_NAME IS NULL;
+
+SELECT *
+FROM EMPLOYEE
+WHERE EMP_NAME IS NOT NULL;
 
 --------------------------------------------------
 -- ALTER TABLE
 --------------------------------------------------
-ALTER TABLE Asset ADD assetType VARCHAR2(50);
-ALTER TABLE Asset MODIFY assetType VARCHAR2(100);
-ALTER TABLE Asset DROP COLUMN assetType;
+ALTER TABLE EMPLOYEE
+ADD EMAIL VARCHAR2(50);
+
+ALTER TABLE EMPLOYEE
+MODIFY EMAIL VARCHAR2(100);
+
+ALTER TABLE EMPLOYEE
+DROP COLUMN EMAIL;
 
 --------------------------------------------------
--- RENAME
+-- RENAME TABLE
 --------------------------------------------------
-RENAME Asset TO Assets;
+RENAME EMPLOYEE TO EMP;
+
+RENAME EMP TO EMPLOYEE;
 
 --------------------------------------------------
 -- VIEW
 --------------------------------------------------
-CREATE VIEW AssetView AS
-SELECT aId,aName,aPrice
-FROM Asset;
+CREATE VIEW EMP_VIEW AS
+SELECT EMP_ID,
+EMP_NAME,
+EMP_SALARY
+FROM EMPLOYEE;
 
-SELECT * FROM AssetView;
+SELECT *
+FROM EMP_VIEW;
 
-DROP VIEW AssetView;
+DROP VIEW EMP_VIEW;
 
 --------------------------------------------------
 -- SEQUENCE
 --------------------------------------------------
-CREATE SEQUENCE asset_seq
-START WITH 1
+CREATE SEQUENCE EMP_SEQ
+START WITH 111
 INCREMENT BY 1;
 
-INSERT INTO Asset
-VALUES(asset_seq.NEXTVAL,'Camera',35000,SYSDATE);
+INSERT INTO EMPLOYEE
+VALUES(EMP_SEQ.NEXTVAL,'New Employee',45000,50);
 
 --------------------------------------------------
--- TRANSACTIONS
+-- TRANSACTION
 --------------------------------------------------
+SAVEPOINT SP1;
+
+UPDATE EMPLOYEE
+SET EMP_SALARY=70000
+WHERE EMP_ID=102;
+
+ROLLBACK TO SP1;
+
 COMMIT;
-
-ROLLBACK;
-
-SAVEPOINT sp1;
-
-ROLLBACK TO sp1;
 
 --------------------------------------------------
 -- DATE
 --------------------------------------------------
-SELECT SYSDATE FROM dual;
+SELECT SYSDATE
+FROM DUAL;
 
 --------------------------------------------------
--- DROP / TRUNCATE
+-- TRUNCATE
 --------------------------------------------------
-TRUNCATE TABLE Asset;   -- Remove all rows
-DROP TABLE Asset;       -- Delete table permanently
+TRUNCATE TABLE EMPLOYEE;
+
+--------------------------------------------------
+-- DROP TABLE
+--------------------------------------------------
+DROP TABLE EMPLOYEE;

@@ -145,3 +145,96 @@ FLASHBACK TABLE TestTable TO BEFORE DROP;
 
 -- Permanently delete
 PURGE TABLE TestTable;
+
+
+-------------------------------------------------------------------------
+--Create all tables with appropriate primary and foreign keys.
+--Insert at least 5 records into each table.
+--Display employee name, department name, project name, and salary.
+--Display employees whose salary is greater than the average salary of their department.
+--Display the department having the highest average salary.
+--Display employees who are not assigned to any project.
+
+-- Department Table
+CREATE TABLE Department(
+    dept_id NUMBER PRIMARY KEY,
+    dept_name VARCHAR2(50)
+);
+
+-- Employee Table
+CREATE TABLE Employee(
+    emp_id NUMBER PRIMARY KEY,
+    emp_name VARCHAR2(50),
+    salary NUMBER,
+    dept_id NUMBER,
+    CONSTRAINT fk_dept
+    FOREIGN KEY(dept_id)
+    REFERENCES Department(dept_id)
+);
+
+-- Project Table
+CREATE TABLE Project(
+    project_id NUMBER PRIMARY KEY,
+    project_name VARCHAR2(50),
+    emp_id NUMBER,
+    CONSTRAINT fk_emp
+    FOREIGN KEY(emp_id)
+    REFERENCES Employee(emp_id)
+);
+
+INSERT INTO Department VALUES(1,'HR');
+INSERT INTO Department VALUES(2,'IT');
+INSERT INTO Department VALUES(3,'Finance');
+
+INSERT INTO Employee VALUES(101,'Ram',35000,1);
+INSERT INTO Employee VALUES(102,'Sita',60000,2);
+INSERT INTO Employee VALUES(103,'Hari',45000,2);
+INSERT INTO Employee VALUES(104,'Gita',55000,3);
+INSERT INTO Employee VALUES(105,'Milan',30000,1);
+
+INSERT INTO Project VALUES(1,'Payroll',101);
+INSERT INTO Project VALUES(2,'Website',102);
+INSERT INTO Project VALUES(3,'Mobile App',103);
+INSERT INTO Project VALUES(4,'Accounting',104);
+
+-- Employee + Department + Project
+SELECT e.emp_name,
+       d.dept_name,
+       p.project_name,
+       e.salary
+FROM Employee e
+JOIN Department d
+ON e.dept_id=d.dept_id
+LEFT JOIN Project p
+ON e.emp_id=p.emp_id;
+
+-- Salary greater than department average
+SELECT emp_name,salary
+FROM Employee e
+WHERE salary>
+(
+SELECT AVG(salary)
+FROM Employee
+WHERE dept_id=e.dept_id
+);
+
+-- Department with highest average salary
+SELECT dept_name
+FROM Department
+WHERE dept_id=
+(
+SELECT dept_id
+FROM Employee
+GROUP BY dept_id
+ORDER BY AVG(salary) DESC
+FETCH FIRST 1 ROW ONLY
+);
+
+-- Employees without project
+SELECT emp_name
+FROM Employee
+WHERE emp_id NOT IN
+(
+SELECT emp_id
+FROM Project
+);
