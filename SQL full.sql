@@ -1,6 +1,3 @@
---------------------------------------------------
--- CREATE TABLE
---------------------------------------------------
 CREATE TABLE EMPLOYEE(
     EMP_ID NUMBER PRIMARY KEY,
     EMP_NAME VARCHAR2(50) NOT NULL,
@@ -10,9 +7,6 @@ CREATE TABLE EMPLOYEE(
 
 DESC EMPLOYEE;
 
---------------------------------------------------
--- INSERT DATA
---------------------------------------------------
 INSERT INTO EMPLOYEE VALUES(101,'Ashish Khadka',50000,10);
 INSERT INTO EMPLOYEE VALUES(102,'Sita Sharma',45000,20);
 INSERT INTO EMPLOYEE VALUES(103,'Ram Thapa',60000,10);
@@ -26,140 +20,77 @@ INSERT INTO EMPLOYEE VALUES(110,'Rohan Shrestha',58000,40);
 
 COMMIT;
 
---------------------------------------------------
--- SELECT
---------------------------------------------------
 SELECT * FROM EMPLOYEE;
 
-SELECT EMP_ID,EMP_NAME
-FROM EMPLOYEE;
+SELECT EMP_ID,EMP_NAME FROM EMPLOYEE;
+SELECT * FROM EMPLOYEE WHERE EMP_ID=101;
+SELECT * FROM EMPLOYEE WHERE EMP_SALARY>50000;
+SELECT * FROM EMPLOYEE WHERE DEPT_ID=20;
+SELECT * FROM EMPLOYEE ORDER BY EMP_SALARY ASC;
+SELECT * FROM EMPLOYEE ORDER BY EMP_SALARY DESC;
+SELECT * FROM EMPLOYEE ORDER BY EMP_NAME;
 
---------------------------------------------------
--- WHERE
---------------------------------------------------
-SELECT *
-FROM EMPLOYEE
-WHERE EMP_ID=101;
 
-SELECT *
-FROM EMPLOYEE
-WHERE EMP_SALARY>50000;
-
-SELECT *
-FROM EMPLOYEE
-WHERE DEPT_ID=20;
-
---------------------------------------------------
--- ORDER BY
---------------------------------------------------
-SELECT *
-FROM EMPLOYEE
-ORDER BY EMP_SALARY ASC;
-
-SELECT *
-FROM EMPLOYEE
-ORDER BY EMP_SALARY DESC;
-
-SELECT *
-FROM EMPLOYEE
-ORDER BY EMP_NAME;
-
---------------------------------------------------
 -- DISTINCT
---------------------------------------------------
-SELECT DISTINCT DEPT_ID
-FROM EMPLOYEE;
+-- REMOVE DUPLICATE VALUES
+SELECT DISTINCT DEPT_ID FROM EMPLOYEE;
 
---------------------------------------------------
+
 -- LIKE
---------------------------------------------------
-SELECT *
-FROM EMPLOYEE
-WHERE EMP_NAME LIKE 'A%';
+-- SEARCH FOR SPECIFIC PATTERN
+SELECT * FROM EMPLOYEE WHERE EMP_NAME LIKE 'A%';
+SELECT * FROM EMPLOYEE WHERE EMP_NAME LIKE '%a';
+SELECT * FROM EMPLOYEE WHERE EMP_NAME LIKE '%Sh%';
+SELECT * FROM EMPLOYEE WHERE EMP_NAME LIKE '_i%';
 
-SELECT *
-FROM EMPLOYEE
-WHERE EMP_NAME LIKE '%a';
 
-SELECT *
-FROM EMPLOYEE
-WHERE EMP_NAME LIKE '%Sh%';
-
-SELECT *
-FROM EMPLOYEE
-WHERE EMP_NAME LIKE '_i%';
-
---------------------------------------------------
 -- BETWEEN
---------------------------------------------------
-SELECT *
-FROM EMPLOYEE
-WHERE EMP_SALARY BETWEEN 50000 AND 65000;
+SELECT * FROM EMPLOYEE WHERE EMP_SALARY BETWEEN 50000 AND 65000;
 
---------------------------------------------------
+
 -- IN
---------------------------------------------------
-SELECT *
-FROM EMPLOYEE
-WHERE DEPT_ID IN (10,20);
+SELECT * FROM EMPLOYEE WHERE DEPT_ID IN (10,20);
+SELECT * FROM EMPLOYEE WHERE EMP_ID IN (101,103,105);
 
-SELECT *
-FROM EMPLOYEE
-WHERE EMP_ID IN (101,103,105);
 
---------------------------------------------------
 -- NOT IN
---------------------------------------------------
-SELECT *
-FROM EMPLOYEE
-WHERE DEPT_ID NOT IN (30,40);
+SELECT * FROM EMPLOYEE WHERE DEPT_ID NOT IN (30,40);
 
---------------------------------------------------
+
 -- AND
---------------------------------------------------
-SELECT *
-FROM EMPLOYEE
-WHERE EMP_SALARY>50000
-AND DEPT_ID=10;
+-- RETURN ROWS ONLY IF ALL CONDITION ARE TRUE
+SELECT * FROM EMPLOYEE WHERE EMP_SALARY>50000 AND DEPT_ID=10;
 
---------------------------------------------------
+
 -- OR
---------------------------------------------------
-SELECT *
-FROM EMPLOYEE
-WHERE DEPT_ID=20
-OR DEPT_ID=40;
+-- RETURN ROWS IF ONE CONDITION IS TRUE 
+SELECT * FROM EMPLOYEE WHERE DEPT_ID=20 OR DEPT_ID=40;
 
---------------------------------------------------
+
 -- NOT
---------------------------------------------------
-SELECT *
-FROM EMPLOYEE
-WHERE NOT EMP_SALARY>60000;
+-- REVERSE THE CONDITION
+SELECT * FROM EMPLOYEE WHERE NOT EMP_SALARY>60000;
 
---------------------------------------------------
+
 -- UPDATE
---------------------------------------------------
-UPDATE EMPLOYEE
-SET EMP_SALARY=55000
-WHERE EMP_ID=101;
+UPDATE EMPLOYEE SET EMP_SALARY=55000 WHERE EMP_ID=101;
 
-UPDATE EMPLOYEE
-SET EMP_NAME='Ashish K.',
-    EMP_SALARY=60000
-WHERE EMP_ID=101;
+UPDATE EMPLOYEE SET EMP_NAME='Ashish K.', EMP_SALARY=60000 WHERE EMP_ID=101;
 
---------------------------------------------------
+
 -- DELETE
---------------------------------------------------
-DELETE FROM EMPLOYEE
-WHERE EMP_ID=110;
+DELETE FROM EMPLOYEE WHERE EMP_ID=110;
 
 ROLLBACK;
 
---------------------------------------------------
+
 -- AGGREGATE FUNCTIONS
---------------------------------------------------
+    --COUNT()	COUNT THE NUMBER OF ROWS
+    --SUM()	    CALCULATE THE TOTAL OF NUMERIC VALUES
+    --AVG()	    CALCULATE THE AVERAGE OF NUMERIC VALUES
+    --MAX()	    FINDS THE HIGHEST VALUE
+    --MIN()	    FINDS THE LOWEST VALUE
+
 SELECT COUNT(*) FROM EMPLOYEE;
 
 SELECT SUM(EMP_SALARY) FROM EMPLOYEE;
@@ -170,9 +101,9 @@ SELECT MAX(EMP_SALARY) FROM EMPLOYEE;
 
 SELECT MIN(EMP_SALARY) FROM EMPLOYEE;
 
---------------------------------------------------
+
 -- GROUP BY
---------------------------------------------------
+-- GROUP ROWS THAT HAVE SAME VALUES
 SELECT DEPT_ID,
 COUNT(*) TOTAL_EMPLOYEE
 FROM EMPLOYEE
@@ -183,25 +114,24 @@ AVG(EMP_SALARY) AVG_SALARY
 FROM EMPLOYEE
 GROUP BY DEPT_ID;
 
---------------------------------------------------
+
 -- HAVING
---------------------------------------------------
+-- FILTER GROUPS CREATED BY GROUP BY.
 SELECT DEPT_ID,
 COUNT(*) TOTAL
 FROM EMPLOYEE
 GROUP BY DEPT_ID
 HAVING COUNT(*)>2;
 
---------------------------------------------------
+
 -- ALIAS
---------------------------------------------------
+-- TEMPORARY NAME GIVEN TO COLUMN OR TABLE TO MAKE OUTPUT EASIER TO READ
 SELECT EMP_NAME AS NAME,
-EMP_SALARY AS SALARY
+EMP_SALARY SALARY
 FROM EMPLOYEE;
 
---------------------------------------------------
 -- ARITHMETIC
---------------------------------------------------
+-- PERFORMS MATHEMATIC CALCULATIONS
 SELECT
 EMP_NAME,
 EMP_SALARY,
@@ -214,16 +144,14 @@ EMP_SALARY,
 EMP_SALARY*0.10 BONUS
 FROM EMPLOYEE;
 
---------------------------------------------------
 -- ROWNUM
---------------------------------------------------
+-- ORACLE PSEUDO-COLUMN THAT ASSIGNS A ROW NUMBER TO EACH RETURNED BY A QUERY, STARTING FORM 1.
 SELECT *
 FROM EMPLOYEE
 WHERE ROWNUM<=5;
 
---------------------------------------------------
+
 -- NULL
---------------------------------------------------
 SELECT *
 FROM EMPLOYEE
 WHERE EMP_NAME IS NULL;
@@ -232,9 +160,7 @@ SELECT *
 FROM EMPLOYEE
 WHERE EMP_NAME IS NOT NULL;
 
---------------------------------------------------
 -- ALTER TABLE
---------------------------------------------------
 ALTER TABLE EMPLOYEE
 ADD EMAIL VARCHAR2(50);
 
@@ -244,16 +170,15 @@ MODIFY EMAIL VARCHAR2(100);
 ALTER TABLE EMPLOYEE
 DROP COLUMN EMAIL;
 
---------------------------------------------------
+
 -- RENAME TABLE
---------------------------------------------------
 RENAME EMPLOYEE TO EMP;
 
 RENAME EMP TO EMPLOYEE;
 
---------------------------------------------------
+
 -- VIEW
---------------------------------------------------
+-- VIRTUAL TABLE CREATED FROM A RESULT OF AN SQL QUERY.
 CREATE VIEW EMP_VIEW AS
 SELECT EMP_ID,
 EMP_NAME,
@@ -265,9 +190,13 @@ FROM EMP_VIEW;
 
 DROP VIEW EMP_VIEW;
 
---------------------------------------------------
+
 -- SEQUENCE
---------------------------------------------------
+-- DATABASE OBJECT THAT GENERATES UNIQUE SEQUENTIAL NUMBERS, COMMONLY USED FOR PRIMARY KEYS.
+    -- "KEYWORDS"
+    --  NEXTVAL	    Generates the next sequence value
+    --  CURRVAL	    Returns the current sequence value (after NEXTVAL has been used in the session)
+
 CREATE SEQUENCE EMP_SEQ
 START WITH 111
 INCREMENT BY 1;
@@ -275,31 +204,40 @@ INCREMENT BY 1;
 INSERT INTO EMPLOYEE
 VALUES(EMP_SEQ.NEXTVAL,'New Employee',45000,50);
 
---------------------------------------------------
+SELECT * FROM EMPLOYEE;
+
+
 -- TRANSACTION
---------------------------------------------------
+-- LOGICAL UNIT OF WORK CONSISTING OF ONE OR MORE SQL STATEMENTS THAT ARE EXECUTED TOGETHER.
+    
+    -- "COMMAND"
+    --  COMMIT       SAVE CHANGES PERMANENTLY
+    --  ROLLBACK     UNDO CHANGES SINCE LAST COMMIT 
+    --  SAVPOINT     CREATE A POINT TO ROLL BACK
+
 SAVEPOINT SP1;
 
 UPDATE EMPLOYEE
 SET EMP_SALARY=70000
 WHERE EMP_ID=102;
 
+SELECT * FROM EMPLOYEE;
+
 ROLLBACK TO SP1;
 
 COMMIT;
 
---------------------------------------------------
+
 -- DATE
---------------------------------------------------
 SELECT SYSDATE
 FROM DUAL;
 
---------------------------------------------------
+
 -- TRUNCATE
---------------------------------------------------
+-- REMOVE ALL ROWS FROM THE TABLE QUICKELY, BUT KEEPS THE TABLE STRUCTURE.
 TRUNCATE TABLE EMPLOYEE;
 
---------------------------------------------------
+
 -- DROP TABLE
---------------------------------------------------
+-- PERMANENTLY REMOVES A DATABASE OBJECT.
 DROP TABLE EMPLOYEE;
