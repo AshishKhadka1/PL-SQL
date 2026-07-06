@@ -1,0 +1,49 @@
+# Oracle SQL Practice
+
+## Topics Covered
+    file name : Employee_Database.sql
+- Create Table
+- Insert Records
+- Select Statements
+- WHERE Clause
+- ORDER BY
+- DISTINCT
+- LIKE
+- BETWEEN
+- IN
+- NOT IN
+- AND / OR / NOT
+- UPDATE
+- DELETE
+- COMMIT
+- ROLLBACK
+- Aggregate Functions
+  - COUNT()
+  - SUM()
+  - AVG()
+  - MAX()
+  - MIN()
+- GROUP BY
+- HAVING
+- Column & Table Alias
+- Arithmetic Operations
+- ROWNUM
+- NULL Handling
+- ALTER TABLE
+- RENAME TABLE
+- VIEW
+- SEQUENCE
+- Transaction Control
+- SYSDATE
+- TRUNCATE
+- DROP TABLE
+- Department Table
+- UNION
+- UNION ALL
+- INNER JOIN
+- LEFT JOIN
+- RIGHT JOIN
+- FULL JOIN
+- CROSS JOIN
+- NATURAL JOIN
+- SELF JOIN
