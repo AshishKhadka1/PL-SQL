@@ -1,4 +1,3 @@
-```sql
 -- =========================================================
 -- Oracle Database Objects & Administration
 -- Covers Views, Sequences, DDL, Joins, Tablespaces & Users
@@ -246,4 +245,4 @@ WHERE USERNAME = 'ASHISH';
 SELECT *
 FROM ROLE_SYS_PRIVS
 WHERE ROLE = 'DEMO';
-```
+
