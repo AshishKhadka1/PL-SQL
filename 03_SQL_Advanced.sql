@@ -246,3 +246,64 @@ SELECT *
 FROM ROLE_SYS_PRIVS
 WHERE ROLE = 'DEMO';
 
+------------------------------------------------------------
+--CONSTRAINTS
+
+    --NOT NULL CONSTRAINT
+--COLUMN CANNOT CONTAIN NULL (EMPTY) VALUES
+CREATE TABLE EMPLOYEE1(
+    EMP_ID NUMBER PRIMARY KEY,
+    EMP_NAME VARCHAR2(50) NOT NULL,
+    EMP_SALARY NUMBER(10,2)
+);
+
+SELECT * FROM EMPLOYEE1;
+
+INSERT INTO EMPLOYEE1
+VALUES(1, 'Ayush Khadka', 50000);
+
+    -- UNIQUE CONSTRAINTS
+-- ALL VALUES ARE UNIQUE
+CREATE TABLE STUDENT1(
+    STUDENT_ID NUMBER PRIMARY KEY,
+    EMAIL VARCHAR2(100) UNIQUE,
+    NAME VARCHAR2(50)
+);
+
+INSERT INTO STUDENT1
+VALUES(101, 'ashish@gmail.com', 'Ashish');
+
+INSERT INTO STUDENT1
+VALUES(102, 'sita@gmail.com', 'Sita');
+
+
+--Primary Key
+--A PRIMARY KEY is a constraint that uniquely identifies each record in a table. It does not allow duplicate or NULL values.
+
+-- Foreign Key
+--A FOREIGN KEY is a constraint that establishes a relationship between two tables and ensures that values in the child table exist in the parent table.
+
+
+-------------------------------------------------------------
+    
+    --SEQUENCE
+--AUTOMATICALLY GENERATES UNIQUE SEQUENTIAL NUMBERS/
+
+CREATE TABLE STUDENTS(
+    STD_ID NUMBER PRIMARY KEY,
+    STD_NAME VARCHAR2(20)
+);
+
+CREATE SEQUENCE STD_SEQ 
+START WITH 10 INCREMENT BY 1;
+
+INSERT INTO STUDENTS VALUES(STD_SEQ.NEXTVAL, 'ASHISH');
+INSERT INTO STUDENTS VALUES(STD_SEQ.NEXTVAL, 'ANIS');
+
+
+SELECT * FROM STUDENTS;
+
+
+-----------------------------------------------------
+
+--PSEUDOCOLUMNS
