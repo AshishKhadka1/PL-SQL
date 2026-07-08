@@ -1,30 +1,45 @@
--- SQL Functions & Grouping
--- Covers Aggregate Functions, Grouping & SQL Features
+/*
+============================================================
+                SQL FUNCTIONS & GROUPING
+============================================================
+Topics Covered
+--------------
+1. Aggregate Functions
+2. GROUP BY Clause
+3. HAVING Clause
+4. Character Functions
+5. Numeric Functions
+6. Conversion Functions
+7. Date Functions
+8. SQL Features
+============================================================
+*/
 
 
 -- =========================================================
 -- SECTION 1 : AGGREGATE FUNCTIONS
 -- =========================================================
 
--- Count total rows
+-- COUNT() : Counts the total number of rows
 SELECT COUNT(*)
 FROM EMPLOYEE;
 
--- Calculate total salary
+-- SUM() : Returns the total salary
 SELECT SUM(EMP_SALARY)
 FROM EMPLOYEE;
 
--- Calculate average salary
+-- AVG() : Returns the average salary
 SELECT AVG(EMP_SALARY)
 FROM EMPLOYEE;
 
--- Find highest salary
+-- MAX() : Returns the highest salary
 SELECT MAX(EMP_SALARY)
 FROM EMPLOYEE;
 
--- Find lowest salary
+-- MIN() : Returns the lowest salary
 SELECT MIN(EMP_SALARY)
 FROM EMPLOYEE;
+
 
 
 -- =========================================================
@@ -37,11 +52,12 @@ SELECT DEPT_ID,
 FROM EMPLOYEE
 GROUP BY DEPT_ID;
 
--- Average salary by department
+-- Display average salary by department
 SELECT DEPT_ID,
        AVG(EMP_SALARY) AS AVG_SALARY
 FROM EMPLOYEE
 GROUP BY DEPT_ID;
+
 
 
 -- =========================================================
@@ -56,8 +72,143 @@ GROUP BY DEPT_ID
 HAVING COUNT(*) > 2;
 
 
+
 -- =========================================================
--- SECTION 4 : SQL FEATURES
+-- SECTION 4 : CHARACTER FUNCTIONS
+-- =========================================================
+
+SELECT *
+FROM EMPLOYEE;
+
+-- LOWER() : Converts text to lowercase
+SELECT LOWER(EMP_NAME)
+FROM EMPLOYEE;
+
+-- UPPER() : Converts text to uppercase
+SELECT UPPER(EMP_NAME)
+FROM EMPLOYEE;
+
+-- Case-insensitive search
+SELECT *
+FROM EMPLOYEE
+WHERE UPPER(EMP_NAME) = 'ASHISH KHADKA';
+
+-- INITCAP() : Converts first letter of each word to uppercase
+SELECT INITCAP(EMP_NAME)
+FROM EMPLOYEE;
+
+-- CONCAT() : Joins two strings
+SELECT CONCAT(EMP_NAME, EMP_SALARY)
+FROM EMPLOYEE;
+
+-- SUBSTR() : Extracts part of a string
+-- SUBSTR(string, start_position, length)
+
+SELECT SUBSTR('I AM STUDENT', 3, 2)
+FROM DUAL;
+
+-- LENGTH() : Returns total number of characters
+SELECT LENGTH('I AM ASHISH')
+FROM DUAL;
+
+SELECT EMP_NAME
+FROM EMPLOYEE
+WHERE LENGTH(EMP_NAME) = 13;
+
+-- INSTR() : Returns the position of a substring
+SELECT INSTR('I AM STUDENT', 'ST')
+FROM DUAL;
+
+-- LPAD() : Pads characters on the left
+SELECT LPAD('ASHISH', 20, '*')
+FROM DUAL;
+
+-- RPAD() : Pads characters on the right
+SELECT RPAD('ASHISH', 10, '*')
+FROM DUAL;
+
+-- TRIM() : Removes leading and trailing spaces
+SELECT TRIM('  ASHISH  ')
+FROM DUAL;
+
+-- REPLACE() : Replaces a string with another string
+SELECT REPLACE('123ASHISH123', '123')
+FROM DUAL;
+
+
+
+-- =========================================================
+-- SECTION 5 : NUMERIC FUNCTIONS
+-- =========================================================
+
+-- ABS() : Returns the absolute value
+SELECT ABS(-26)
+FROM DUAL;
+
+-- CEIL() : Rounds up to the nearest integer
+SELECT CEIL(15.1)
+FROM DUAL;
+
+-- FLOOR() : Rounds down to the nearest integer
+SELECT FLOOR(15.9)
+FROM DUAL;
+
+-- TRUNC() : Removes the decimal part without rounding
+SELECT TRUNC(10.8)
+FROM DUAL;
+
+-- MOD() : Returns the remainder
+SELECT MOD(20,3)
+FROM DUAL;
+
+-- POWER() : Raises a number to a power
+SELECT POWER(2,3)
+FROM DUAL;
+
+-- SQRT() : Returns the square root
+SELECT SQRT(81)
+FROM DUAL;
+
+
+
+-- =========================================================
+-- SECTION 6 : CONVERSION FUNCTIONS
+-- =========================================================
+
+-- TO_CHAR() : Converts number to character
+SELECT TO_CHAR(12345)
+FROM DUAL;
+
+-- TO_CHAR() : Converts date to character
+SELECT TO_CHAR(SYSDATE,'DD-MON-YYYY')
+FROM DUAL;
+
+-- TO_NUMBER() : Converts character to number
+SELECT TO_NUMBER('2500') + 500
+FROM DUAL;
+
+-- TO_DATE() : Converts character to date
+SELECT TO_DATE('07-07-2026','DD-MM-YYYY')
+FROM DUAL;
+
+-- CAST() : Converts one data type to another
+SELECT CAST('150' AS NUMBER)
+FROM DUAL;
+
+
+
+-- =========================================================
+-- SECTION 7 : DATE FUNCTIONS
+-- =========================================================
+
+-- Display current system date
+SELECT SYSDATE
+FROM DUAL;
+
+
+
+-- =========================================================
+-- SECTION 8 : SQL FEATURES
 -- =========================================================
 
 -- Column Alias
@@ -65,121 +216,13 @@ SELECT EMP_NAME AS NAME,
        EMP_SALARY AS SALARY
 FROM EMPLOYEE;
 
--- Arithmetic Expressions
+-- Arithmetic Expression
 SELECT EMP_NAME,
        EMP_SALARY,
        EMP_SALARY * 12 AS ANNUAL_SALARY
 FROM EMPLOYEE;
 
--- ROWNUM
+-- Display first five rows
 SELECT *
 FROM EMPLOYEE
 WHERE ROWNUM <= 5;
-
--- SYSDATE
-SELECT SYSDATE
-FROM DUAL;
-
-
------------------------------------- 
---SECTION 5 : CHARACTER FUNCTIONS
-
-SELECT * FROM EMPLOYEE;
-
--- FOR LOWER CASE OUTPUT
-SELECT LOWER (EMP_NAME) FROM EMPLOYEE;
-
---FOR UPPER CASE OUTPUT
-SELECT UPPER (EMP_NAME) FROM EMPLOYEE;
-SELECT * FROM EMPLOYEE WHERE  UPPER (EMP_NAME) = 'ASHISH KHADKA';
-
--- FIRST LETTER CAPITAL
-SELECT INITCAP(EMP_NAME) FROM EMPLOYEE;
-
--- CONCAT
-SELECT CONCAT(EMP_NAME, EMP_SALARY) FROM EMPLOYEE;
-
-    -- SUBSTR
---SUBSTR(string, start_position, length)
-
---String: 'I AM STUDENT'
---Start Position: 3
---Length: 2
-
-SELECT SUBSTR ('I AM STUDENT', 3, 2) FROM DUAL;
-
--- TOTAL LENGTH OF STRING
-SELECT LENGTH ('I AM ASHISH') FROM DUAL;
-SELECT EMP_NAME FROM EMPLOYEE WHERE LENGTH (EMP_NAME) = 13;
-
-    -- INSTR
--- USED TO FIND THE POSITION OF A SUBSTRING WITHIN A STRING.
-SELECT INSTR('I AM STUDENT', 'ST') FROM DUAL;
-
-    -- LPAD
--- LEFT PADDING : returns a string of a specified length by adding padding characters to the left
-SELECT LPAD ('ASHISH', 20, '*') FROM DUAL;
-
-    -- RPAD
--- RIGHT PADDING : returns a string of a specified length by padding characters on the right
-SELECT RPAD ('ASHISH', 10, '*') FROM DUAL;
-
---TRIM
-SELECT TRIM('  ASHISH  ') FROM DUAL;
-
--- REPLACE
-SELECT REPLACE ('123ASHISH123', '123') FROM DUAL;
-
-
----------------------------------------------------------
---NUMERIC FUNCTIONS
-
-    -- ABS()
--- ABSOLUTE VALUE
-SELECT ABS (-26) FROM DUAL;
-
-    --CEIL()
--- ROUND UP : RETURN THE SMALLEST INTEGER GREATER THAN OR EQUAL TO NUMBER 
-SELECT CEIL (15.1) FROM DUAL;
-
-    --FLOOR()
--- ROUND UP : RETURN LARGEST INTEGER LESS THAN OR EQUAL TO NUMBER
-SELECT FLOOR (15.9) FROM DUAL;
-
-    -- TRUNC()
--- REMOVE DECIMAL WITHOUT ROUNDING
-SELECT TRUNC(10.8) FROM DUAL;
-
-    -- MOD()
--- REMAINDER
-SELECT MOD(20,3) FROM DUAL;
-
-    -- POWER()
-SELECT POWER (2,3) FROM DUAL;
-
-    -- SQRT()
-SELECT SQRT(81) FROM DUAL;
-
-
---------------------------------------------------
-    -- CONVERSION FUNCTION
--- CONVERT DATATYPE FROM ONE DATATYPE TO ANOTHER
-
-    -- TO_CHAR()
--- CONVERTS A NUMBER OR DATE INTO A CHARACTER (STRING)
-SELECT TO_CHAR(12345) FROM DUAL;
-
-SELECT TO_CHAR(SYSDATE, 'DD-MON-YYYY') FROM DUAL;
-
-    -- TO_NUMBER
--- CONVERTS A CHARACTER STRING INTO A NUMBER
-SELECT TO_NUMBER ('2500') + 500 FROM DUAL;
-
-    -- TO_DATE
--- CONVERTS A CHARACTER STRING INTO A DATE
-SELECT TO_DATE('07-07-2026','DD-MM-YYYY')
-FROM DUAL;
-
-    -- CAST()
--- CONVERTS ONE DATA TYPE TO ANOTHER
-SELECT CAST('150' AS NUMBER) FROM DUAL;
