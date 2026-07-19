@@ -238,3 +238,5 @@ WHERE emp_id NOT IN
 SELECT emp_id
 FROM Project
 );
+
+-- NOTION PRACTICES
