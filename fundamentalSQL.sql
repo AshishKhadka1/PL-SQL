@@ -240,3 +240,17 @@ FROM Project
 );
 
 -- NOTION PRACTICES
+
+--2
+CONNECT scott/tiger;
+
+SET LINESIZE 120
+SET PAGESIZE 30
+
+DESC emp;
+
+SELECT*FROM emp;
+
+/
+
+EXIT;
