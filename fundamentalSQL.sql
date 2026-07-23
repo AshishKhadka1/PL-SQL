@@ -1,244 +1,205 @@
---Write SQL statements to:
-
---Create a Student table
---Insert at least 3 records
---Display all records
---Display only name and marks
---Show students with marks greater than 75
-    
+--1. Create Student Table
 CREATE TABLE STUDENT (
     ID NUMBER PRIMARY KEY,
     NAME VARCHAR2(50),
     AGE NUMBER,
     MARKS NUMBER
 );
+Insert Records
 INSERT INTO STUDENT VALUES (1, 'RAM', 20, 49);
 INSERT INTO STUDENT VALUES (2, 'SITA', 19, 90);
 INSERT INTO STUDENT VALUES (3, 'HARI', 21, 70);
 
+COMMIT;
+Display Records
 SELECT * FROM STUDENT;
-SELECT NAME , MARKS FROM STUDENT;
-SELECT * FROM STUDENT 
-    WHERE MARKS > 75 ;
 
--------------------------------------------------------------------------
-    
---Update marks of a student
---Delete a student record
---Display students sorted by marks (descending)
---Show students with marks between 70 and 90
---Show students whose name starts with 'S'
+SELECT NAME, MARKS
+FROM STUDENT;
 
-UPDATE STUDENT SET MARKS = 85 WHERE ID = 1;
+SELECT *
+FROM STUDENT
+WHERE MARKS > 75;
+--2. UPDATE and DELETE
+Update Marks
+UPDATE STUDENT
+SET MARKS = 85
+WHERE ID = 1;
 
-DELETE FROM STUDENT WHERE ID = 3;
+COMMIT;
+Delete Record
+DELETE FROM STUDENT
+WHERE ID = 3;
 
-SELECT * FROM STUDENT ORDER BY MARKS DESC;
+COMMIT;
+--3. Sorting and Filtering
+SELECT *
+FROM STUDENT
+ORDER BY MARKS DESC;
 
-SELECT * FROM STUDENT WHERE MARKS BETWEEN 70 AND 90;
+SELECT *
+FROM STUDENT
+WHERE MARKS BETWEEN 70 AND 90;
 
-SELECT * FROM STUDENT WHERE NAME LIKE 'S%';
-
--------------------------------------------------------------------------
-
---Find average, maximum, and minimum marks
---Count total students
---Group students by age and count them
---Display students with marks greater than average
---Show names and marks sorted by marks
-        
-SELECT AVG(MARKS), MAX(MARKS), MIN(MARKS) FROM STUDENT;
-
-SELECT COUNT(*) FROM STUDENT;
-
-SELECT AGE, COUNT(*) FROM STUDENT GROUP BY AGE;
-
-SELECT * FROM STUDENT WHERE MARKS > (SELECT AVG(MARKS) FROM STUDENT);
-
-SELECT NAME, MARKS FROM STUDENT ORDER BY MARKS DESC;
-
--------------------------------------------------------------------------
-
---Create Department and Employee tables
---Insert sample data
---Display employee name with department name (JOIN)
---Show employees whose salary is greater than average salary (Subquery)
-        
-CREATE TABLE DEPARTMENT (
-    DEPT_ID NUMBER PRIMARY KEY,
-    DEPT_NAME VARCHAR2(50)
+SELECT *
+FROM STUDENT
+WHERE NAME LIKE 'S%';
+--4. Aggregate Functions
+SELECT
+    AVG(MARKS) AS AVERAGE,
+    MAX(MARKS) AS MAXIMUM,
+    MIN(MARKS) AS MINIMUM
+FROM STUDENT;
+Count Students
+SELECT COUNT(*)
+FROM STUDENT;
+Group By
+SELECT AGE,
+       COUNT(*) AS TOTAL_STUDENTS
+FROM STUDENT
+GROUP BY AGE;
+Subquery
+SELECT *
+FROM STUDENT
+WHERE MARKS >
+(
+    SELECT AVG(MARKS)
+    FROM STUDENT
 );
-
-CREATE TABLE EMPLOYEE (
-    EMP_ID NUMBER PRIMARY KEY,
-    EMP_NAME VARCHAR2(50),
-    SALARY NUMBER,
-    DEPT_ID NUMBER, 
-    FOREIGN KEY (DEPT_ID) REFERENCES DEPARTMENT(DEPT_ID)
-);
-
-INSERT INTO Department VALUES (1, 'HR');
-INSERT INTO Department VALUES (2, 'IT');  
-
-
-INSERT INTO Employee VALUES (101, 'Ram', 30000, 1);
-INSERT INTO Employee VALUES (102, 'Sita', 40000, 2);
-INSERT INTO Employee VALUES (103, 'Hari', 25000, 1);
-
--- JOIN
-SELECT E.EMP_NAME, D.DEPT_NAME 
-FROM EMPLOYEE E
-JOIN DEPARTMENT D
-ON E.DEPT_ID = D.DEPT_ID;
-
--- SUBQUERY
-SELECT emp_name, salary
-FROM Employee
-WHERE salary > (SELECT AVG(salary) FROM Employee);
-
------------------------------------------------------------------------
---Create a sequence
---Create Product table
---Insert records using sequence
---Display all records
-
+Display Name and Marks
+SELECT NAME, MARKS
+FROM STUDENT
+ORDER BY MARKS DESC;
+--5. Sequence
+Create Sequence
 CREATE SEQUENCE PROD_SEQ
 START WITH 1
 INCREMENT BY 1;
-
-
-CREATE TABLE Product (
-  p_id NUMBER PRIMARY KEY,
-  p_name VARCHAR2(50),
-  price NUMBER
+Create Product Table
+CREATE TABLE PRODUCT
+(
+    P_ID NUMBER PRIMARY KEY,
+    P_NAME VARCHAR2(50),
+    PRICE NUMBER
 );
+Insert Records
+INSERT INTO PRODUCT VALUES (PROD_SEQ.NEXTVAL,'Pen',10);
+INSERT INTO PRODUCT VALUES (PROD_SEQ.NEXTVAL,'Book',50);
+INSERT INTO PRODUCT VALUES (PROD_SEQ.NEXTVAL,'Bag',500);
 
-INSERT INTO Product VALUES (prod_seq.NEXTVAL, 'Pen', 10);
-INSERT INTO Product VALUES (prod_seq.NEXTVAL, 'Book', 50);
-INSERT INTO Product VALUES (prod_seq.NEXTVAL, 'Bag', 500);
-
-SELECT * FROM Product;
-
-------------------------------------------------------------------------
-
---Create a table
---Insert data
---Drop the table
---Show recycle bin contents
---Restore the table
---Permanently delete the table
-        
-CREATE TABLE TestTable (
-  id NUMBER,
-  name VARCHAR2(50)
+COMMIT;
+Display Products
+SELECT *
+FROM PRODUCT;
+--6. Recycle Bin
+Create Table
+CREATE TABLE TESTTABLE
+(
+    ID NUMBER,
+    NAME VARCHAR2(50)
 );
+Insert Data
+INSERT INTO TESTTABLE
+VALUES (1,'Ram');
 
-INSERT INTO TestTable VALUES (1, 'Ram');
-
-DROP TABLE TestTable;
-
--- View recycle bin
+COMMIT;
+Drop Table
+DROP TABLE TESTTABLE;
+View Recycle Bin
 SHOW RECYCLEBIN;
-
--- Restore table
-FLASHBACK TABLE TestTable TO BEFORE DROP;
-
--- Permanently delete
-PURGE TABLE TestTable;
-
-
--------------------------------------------------------------------------
---Create all tables with appropriate primary and foreign keys.
---Insert at least 5 records into each table.
---Display employee name, department name, project name, and salary.
---Display employees whose salary is greater than the average salary of their department.
---Display the department having the highest average salary.
---Display employees who are not assigned to any project.
-
--- Department Table
-CREATE TABLE Department(
-    dept_id NUMBER PRIMARY KEY,
-    dept_name VARCHAR2(50)
-);
-
--- Employee Table
-CREATE TABLE Employee(
-    emp_id NUMBER PRIMARY KEY,
-    emp_name VARCHAR2(50),
-    salary NUMBER,
-    dept_id NUMBER,
-    CONSTRAINT fk_dept
-    FOREIGN KEY(dept_id)
-    REFERENCES Department(dept_id)
-);
-
--- Project Table
-CREATE TABLE Project(
-    project_id NUMBER PRIMARY KEY,
-    project_name VARCHAR2(50),
-    emp_id NUMBER,
-    CONSTRAINT fk_emp
-    FOREIGN KEY(emp_id)
-    REFERENCES Employee(emp_id)
-);
-
-INSERT INTO Department VALUES(1,'HR');
-INSERT INTO Department VALUES(2,'IT');
-INSERT INTO Department VALUES(3,'Finance');
-
-INSERT INTO Employee VALUES(101,'Ram',35000,1);
-INSERT INTO Employee VALUES(102,'Sita',60000,2);
-INSERT INTO Employee VALUES(103,'Hari',45000,2);
-INSERT INTO Employee VALUES(104,'Gita',55000,3);
-INSERT INTO Employee VALUES(105,'Milan',30000,1);
-
-INSERT INTO Project VALUES(1,'Payroll',101);
-INSERT INTO Project VALUES(2,'Website',102);
-INSERT INTO Project VALUES(3,'Mobile App',103);
-INSERT INTO Project VALUES(4,'Accounting',104);
-
--- Employee + Department + Project
-SELECT e.emp_name,
-       d.dept_name,
-       p.project_name,
-       e.salary
-FROM Employee e
-JOIN Department d
-ON e.dept_id=d.dept_id
-LEFT JOIN Project p
-ON e.emp_id=p.emp_id;
-
--- Salary greater than department average
-SELECT emp_name,salary
-FROM Employee e
-WHERE salary>
+Restore Table
+FLASHBACK TABLE TESTTABLE TO BEFORE DROP;
+Permanently Delete
+PURGE TABLE TESTTABLE;
+--7. Department and Employee (JOIN)
+Create Department
+CREATE TABLE DEPARTMENT
 (
-SELECT AVG(salary)
-FROM Employee
-WHERE dept_id=e.dept_id
+    DEPT_ID NUMBER PRIMARY KEY,
+    DEPT_NAME VARCHAR2(50)
 );
-
--- Department with highest average salary
-SELECT dept_name
-FROM Department
-WHERE dept_id=
+Create Employee
+CREATE TABLE EMPLOYEE
 (
-SELECT dept_id
-FROM Employee
-GROUP BY dept_id
-ORDER BY AVG(salary) DESC
-FETCH FIRST 1 ROW ONLY
+    EMP_ID NUMBER PRIMARY KEY,
+    EMP_NAME VARCHAR2(50),
+    SALARY NUMBER,
+    DEPT_ID NUMBER,
+    CONSTRAINT FK_DEPT
+    FOREIGN KEY (DEPT_ID)
+    REFERENCES DEPARTMENT(DEPT_ID)
 );
+Insert Departments
+INSERT INTO DEPARTMENT VALUES (1,'HR');
+INSERT INTO DEPARTMENT VALUES (2,'IT');
+INSERT INTO DEPARTMENT VALUES (3,'Finance');
+Insert Employees
+INSERT INTO EMPLOYEE VALUES (101,'Ram',35000,1);
+INSERT INTO EMPLOYEE VALUES (102,'Sita',60000,2);
+INSERT INTO EMPLOYEE VALUES (103,'Hari',45000,2);
+INSERT INTO EMPLOYEE VALUES (104,'Gita',55000,3);
+INSERT INTO EMPLOYEE VALUES (105,'Milan',30000,1);
 
--- Employees without project
-SELECT emp_name
-FROM Employee
-WHERE emp_id NOT IN
+COMMIT;
+--8. Project Table
+CREATE TABLE PROJECT
 (
-SELECT emp_id
-FROM Project
+    PROJECT_ID NUMBER PRIMARY KEY,
+    PROJECT_NAME VARCHAR2(50),
+    EMP_ID NUMBER,
+    CONSTRAINT FK_EMP
+    FOREIGN KEY (EMP_ID)
+    REFERENCES EMPLOYEE(EMP_ID)
 );
+Insert Projects
+INSERT INTO PROJECT VALUES (1,'Payroll',101);
+INSERT INTO PROJECT VALUES (2,'Website',102);
+INSERT INTO PROJECT VALUES (3,'Mobile App',103);
+INSERT INTO PROJECT VALUES (4,'Accounting',104);
 
+COMMIT;
+--9. JOIN
+SELECT
+    E.EMP_NAME,
+    D.DEPT_NAME,
+    P.PROJECT_NAME,
+    E.SALARY
+FROM EMPLOYEE E
+JOIN DEPARTMENT D
+ON E.DEPT_ID = D.DEPT_ID
+LEFT JOIN PROJECT P
+ON E.EMP_ID = P.EMP_ID;
+--10. Subquery
+Employees Earning More Than Department Average
+SELECT EMP_NAME,
+       SALARY
+FROM EMPLOYEE E
+WHERE SALARY >
+(
+    SELECT AVG(SALARY)
+    FROM EMPLOYEE
+    WHERE DEPT_ID = E.DEPT_ID
+);
+--11. Department with Highest Average Salary
+SELECT DEPT_NAME
+FROM DEPARTMENT
+WHERE DEPT_ID =
+(
+    SELECT DEPT_ID
+    FROM EMPLOYEE
+    GROUP BY DEPT_ID
+    ORDER BY AVG(SALARY) DESC
+    FETCH FIRST 1 ROW ONLY
+);
+--12. Employees Without Project
+SELECT EMP_NAME
+FROM EMPLOYEE
+WHERE EMP_ID NOT IN
+(
+    SELECT EMP_ID
+    FROM PROJECT
+);
+--------------------------------------------------------------------
 -- NOTION PRACTICES
 
 --2
